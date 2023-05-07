@@ -6,9 +6,9 @@ const preguntas = {
     name: 'opcion',
     message: '¿Qué desea hacer?',
     choices: [
-        { value: '1', name: `${'1.'.green} Buscar ciudad`},
-        { value: '2', name: `${'2.'.green} Historial`},    
-        { value: '0', name: `${'0.'.green} Salir`}
+        { value: 1, name: `${'1.'.green} Buscar ciudad`},
+        { value: 2, name: `${'2.'.green} Historial`},    
+        { value: 0, name: `${'0.'.green} Salir`}
     ]
 }
 const listadoDeTareasABorrar = async (tareas=[]) =>{
@@ -32,7 +32,7 @@ const listadoDeTareasABorrar = async (tareas=[]) =>{
     return id;
 }
 
-const listadoDeTareasACompletar = async (tareas=[]) =>{
+/* const listadoDeTareasACompletar = async (tareas=[]) =>{
 
     const arregloOp = tareas.map((tarea, i) => {
         const {id, desc, completadoEn} = tarea;
@@ -50,10 +50,30 @@ const listadoDeTareasACompletar = async (tareas=[]) =>{
 
     const {ids} = await inquirer.prompt(listadoTareas);
     return ids;
+} */
+
+const listadoDeCiudades = async (ciudades=[]) =>{
+
+    const arregloOp = tareas.map((ciudades, i) => {
+        const {id, desc, completadoEn} = ciudades;
+        const idx = `${i + 1}`.green;
+        const op = { value: id , name: `${idx}. ${desc}`, checked: (completadoEn) ? true : false }
+        return op;
+    })
+
+    const listadoTareas = {
+        type: 'checkbox',
+        name: 'ids',
+        message: '¿Qué ciudad desea seleccionar?',
+        choices: arregloOp
+    }
+
+    const {ids} = await inquirer.prompt(listadoTareas);
+    return ids;
 }
 
 const inquirerMenu = async() => {
-        console.clear();
+        //console.clear();
         console.log('==================='.green);
         console.log('Seleccione un opción'.green);
         console.log('==================='.green);
@@ -76,7 +96,7 @@ const leerImput = async(mensaje) =>
             validate( value ){
                 if(value.length === 0 )
                 {
-                    return 'Por favor ingrese un valor';
+                    return 'Por favor ingrese una ciudad';
                 }
                 return true;
             }
@@ -120,5 +140,4 @@ module.exports = {
     leerImput,
     listadoDeTareasABorrar,
     confirmar,
-    listadoDeTareasACompletar
 }
