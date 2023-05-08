@@ -8,18 +8,59 @@ class Busqueda{
         //TO DO: LEER DB SI EXISTE
     }
 
+    get paramsMapBox()
+    {
+        return {
+            'access_token': process.env.MAPBOX_KEY || '',
+            'limit': 5,
+            'language': 'es'
+        } 
+    }
+
     async ciudad (lugar = '')
     {
         //peticion http
-        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/mar%20del%2C-37.86172915727613.json?limit=5&language=es&access_token=pk.eyJ1IjoiZ2NoYWxkdSIsImEiOiJjbGhkb3h4aW8xOTRyM3NwaDc5NG95ZGhlIn0.1gQdkCQRYuHgZgLJzhpyng`
-        
         try{
-            const res = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/mar%20del%2C-37.86172915727613.json?limit=5&language=es&access_token=pk.eyJ1IjoiZ2NoYWxkdSIsImEiOiJjbGhkb3h4aW8xOTRyM3NwaDc5NG95ZGhlIn0.1gQdkCQRYuHgZgLJzhpyng');
-                    console.log(res.data);
+            const instance = new axios.create({
+                baseURL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${lugar}.json`,
+                params: this.paramsMapBox
+            })
+            const res = await instance.get();
+            return res.data.features.map((lugar)=>{
+                return{
+                    nombre: lugar.place_name,
+                    id: lugar.id,
+                    lng: lugar.center[0],
+                    lat: lugar.center[1]
+                }
+            });
         }catch (error) {
-            return []
+            return [];
         }
     }
+    get paramsWeather()
+    {
+        return {
+            'appid': process.env.OPENWEATHER_KEY || '',
+        } 
+    }
+    async temperaturaCiudad(lugar)
+    {
+            const instance = new axios.create({
+                baseURL: `https://api.openweathermap.org/data/2.5/weather?lat=${lugar.lat}&lon=${lugar.lng}`,
+                params: this.paramsWeather
+            })
+            const res = await instance.get();
+            console.log(res)
+            /* return res.data.features.map((lugar)=>{
+                return{
+                    nombre: lugar.place_name,
+                    id: lugar.id,
+                    lng: lugar.center[0],
+                    lat: lugar.center[1]
+                }
+            }); */
+    }   
 }
 
 

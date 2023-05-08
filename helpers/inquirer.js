@@ -54,22 +54,27 @@ const listadoDeTareasABorrar = async (tareas=[]) =>{
 
 const listadoDeCiudades = async (ciudades=[]) =>{
 
-    const arregloOp = tareas.map((ciudades, i) => {
-        const {id, desc, completadoEn} = ciudades;
-        const idx = `${i + 1}`.green;
-        const op = { value: id , name: `${idx}. ${desc}`, checked: (completadoEn) ? true : false }
+    const lugares = ciudades.map((city, i) => {
+        const {nombre, id} = city;
+        const idx = `${i+1}`.green;
+        const op = { 
+            value: id,
+            name: `${idx} ${nombre}`
+        }
         return op;
     })
-
-    const listadoTareas = {
-        type: 'checkbox',
-        name: 'ids',
+    lugares.unshift(
+        { value: '0',
+            name: '0. '.green + 'Cancelar'
+        });
+    const preguntas = {
+        type: 'list',
+        name: 'ciudad',
         message: '¿Qué ciudad desea seleccionar?',
-        choices: arregloOp
+        choices: lugares
     }
-
-    const {ids} = await inquirer.prompt(listadoTareas);
-    return ids;
+    const {ciudad} = await inquirer.prompt(preguntas);
+    return ciudad;
 }
 
 const inquirerMenu = async() => {
@@ -140,4 +145,5 @@ module.exports = {
     leerImput,
     listadoDeTareasABorrar,
     confirmar,
+    listadoDeCiudades
 }
