@@ -51,15 +51,8 @@ class Busqueda{
                 params: this.paramsWeather
             })
             const res = await instance.get();
-            console.log(res)
-            /* return res.data.features.map((lugar)=>{
-                return{
-                    nombre: lugar.place_name,
-                    id: lugar.id,
-                    lng: lugar.center[0],
-                    lat: lugar.center[1]
-                }
-            }); */
+            //console.log(res.data.main)
+            return res.data.main;
     }   
 }
 
