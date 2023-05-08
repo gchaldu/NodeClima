@@ -19,6 +19,7 @@ const main = async() => {
                 const id = await listadoDeCiudades(lugares);
                 const ciudadSeleccionada = lugares.find((city)=> city.id === id )
                 const {nombre, lng, lat} = ciudadSeleccionada;
+                await busqueda.temperaturaCiudad("main" + ciudadSeleccionada);
                 //Mostrar resultados
                 console.log('Información del Clima'.green);
                 console.log('Ciudad: ' + nombre);
